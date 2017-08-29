@@ -10,7 +10,7 @@ import pandas as pd
 import seaborn as sns; sns.set()
 import matplotlib.pyplot as plt
 #importar los datos
-exvih = pd.read_csv("C:/Users/ocariceo/Downloads/exvih.csv")
+exvih = pd.read_csv("exvih.csv")
 
 plt.figure()
 sns.countplot(x='Sexo', hue='Test', data=exvih, palette='RdBu')
@@ -80,32 +80,30 @@ plt.ylabel('Precision')
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import confusion_matrix, classification_report
 
-# Create training and test sets
-
-# Create the classifier: logreg
+# Crear el clasificador
 logreg = LogisticRegression()
 
-# Fit the classifier to the training data
+# ajustar el clasificador a los datos entrenados
 logreg.fit(X_train, y_train)
 
-# Predict the labels of the test set: y_pred
+# Predecir las categorias del set de datos de prueba
 y_pred = logreg.predict(X_test)
 
-# Compute and print the confusion matrix and classification report
+# Calcular la matriz de confusion y el reporte de clasificacion
 print(confusion_matrix(y_test, y_pred))
 print(classification_report(y_test, y_pred))
 
 
-# Import necessary modules
+# Importar modulos necesarios
 from sklearn.metrics import roc_curve
 
-# Compute predicted probabilities: y_pred_prob
+# calcular las probabilidades para la prediccion 
 y_pred_prob = logreg.predict_proba(X_test)[:,1]
 
-# Generate ROC curve values: fpr, tpr, thresholds
+# Generar el grafico de la curva ROC
 fpr, tpr, thresholds = roc_curve(y_test, y_pred_prob)
 
-# Plot ROC curve
+
 plt.plot([0, 1], [0, 1], 'k--')
 plt.plot(fpr, tpr)
 plt.xlabel('Valor de Falsos Positivos')
@@ -116,16 +114,14 @@ plt.show()
 from sklearn.metrics import roc_auc_score
 from sklearn.model_selection import cross_val_score
 
-# Compute predicted probabilities: y_pred_prob
 y_pred_prob = logreg.predict_proba(X_test)[:,1]
 
-# Compute and print AUC score
+# Calcular los valores del area bajo la curva (AUC) 
 print("AUC: {}".format(roc_auc_score(y_test, y_pred_prob)))
 
-# Compute cross-validated AUC scores: cv_auc
+# Calcular los valores de la validacion cruzada de AUC
 cv_auc = cross_val_score(logreg, X, y, cv = 5, scoring = "roc_auc")
 
-# Print list of AUC scores
 print("Valor AUC calculado usando 5 etapas de validación cruzada: {}".format(cv_auc))
 
 
